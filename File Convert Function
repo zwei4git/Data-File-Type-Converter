@@ -1,0 +1,17 @@
+fileconv<-function(input,output,dirc){
+  p<-getwd()
+  on.exit(setwd(p))                            #return to default wd
+    if(suppressWarnings(!require('rio'))){
+      install.packages('rio',dependencies = TRUE)
+      suppressWarnings(require('rio'))}
+    setwd(dirc)
+    a<-list.files(pattern = paste('*.',input,sep = ''))  
+    conv<-function(b,c){
+      c<-output
+      d<-strsplit(b,split = '[.](?=[^.]+$)', perl=TRUE) #regular expression, split string so files with '.' have cprrect output names
+      convert(b,out_file = paste(d[[1]][1],c,sep = '.'))}
+    lapply(a,conv)
+}
+
+#example
+fileconv('xlsx','csv',dirc = 'Z:/Myeloma/SPS_jul17/data')
